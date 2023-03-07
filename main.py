@@ -1,3 +1,4 @@
+import time
 import turtle
 import winsound as sound
 
@@ -38,34 +39,37 @@ bola.speed(0)
 bola.shape("square")
 bola.color("white")
 bola.penup()
-bola.dx = 0.2
-bola.dy = 0.2
-
+bola.dx = 3
+bola.dy = 3
 
 
 #   funçoes
 def barra_a_up():
     y = barra_a.ycor()
-    y += 30
-    barra_a.sety(y)
+    if y < 240:
+        y += 30
+        barra_a.sety(y)
 
 
 def barra_a_down():
     y = barra_a.ycor()
-    y -= 30
-    barra_a.sety(y)
+    if y > -240:
+        y -= 30
+        barra_a.sety(y)
 
 
 def barra_b_up():
     y = barra_b.ycor()
-    y += 30
-    barra_b.sety(y)
+    if y < 240:
+        y += 30
+        barra_b.sety(y)
 
 
 def barra_b_down():
     y = barra_b.ycor()
-    y -= 30
-    barra_b.sety(y)
+    if y > -240:
+        y -= 30
+        barra_b.sety(y)
 
 
 #   teclado
@@ -86,10 +90,9 @@ pen.hideturtle()
 pen.goto(0, 260)
 pen.write("Player A: 0 Player B:0", align="center", font=("Courier", 24, "normal"))
 
-
-
 #   main game loop
 while True:
+    time.sleep(1/60)  # Keep frame rate constant
     wn.update()
     #   Move a bola
     bola.setx(bola.xcor() + bola.dx)
@@ -105,35 +108,31 @@ while True:
 
     if bola.xcor() > 390:
         bola.goto(0, 0)
-        bola.dx = 0.2
+        bola.dx = 3
         bola.dx *= -1
         score_a += 1
         pen.clear()
         pen.write("Player A: {} Player B: {}".format(score_a, score_b), align="center", font=("Courier", 24, "normal"))
         sound.PlaySound("bounce.wav", sound.SND_ASYNC)
-        bola.dx = 0.2
 
     if bola.xcor() < -390:
         bola.goto(0, 0)
-        bola.dx = 0.2
+        bola.dx = 3
         bola.dx *= -1
         score_b += 1
         pen.clear()
         pen.write("Player A: {} Player B: {}".format(score_a, score_b), align="center", font=("Courier", 24, "normal"))
         sound.PlaySound("bounce.wav", sound.SND_ASYNC)
 
-
-
     #   colisao
-    if 340 < bola.xcor() < 350 and (bola.ycor() < barra_b.ycor() + 40) and (bola.ycor() > barra_b.ycor() - 40):
+    if 340 < bola.xcor() < 350 and (bola.ycor() < barra_b.ycor() + 45) and (bola.ycor() > barra_b.ycor() - 45):
         bola.setx(340)
         bola.dx *= -1
         bola.dx *= 1.03
         sound.PlaySound("bounce.wav", sound.SND_ASYNC)
 
-    if -340 > bola.xcor() > -350 and (bola.ycor() < barra_a.ycor() + 40) and (bola.ycor() > barra_a.ycor() - 40):
+    if -340 > bola.xcor() > -350 and (bola.ycor() < barra_a.ycor() + 45) and (bola.ycor() > barra_a.ycor() - 45):
         bola.setx(-340)
         bola.dx *= -1
-        bola.dx *= 1.03
+        bola.dx *= 1.5
         sound.PlaySound("bounce.wav", sound.SND_ASYNC)
-
